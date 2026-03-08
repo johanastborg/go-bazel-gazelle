@@ -1,0 +1,22 @@
+# Bazel
+bazel-*
+.bazelrc.user
+
+MODULE.bazel.lock
+.bazelrc
+
+# Go
+bin/
+obj/
+*.exe
+*.test
+*.prof
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
