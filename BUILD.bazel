@@ -1,5 +1,8 @@
 load("@gazelle//:def.bzl", "gazelle")
 load("@rules_go//go:def.bzl", "go_binary", "go_library")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load")
+load("@aspect_bazel_lib//lib:transitions.bzl", "platform_transition_binary")
 
 # gazelle:prefix github.com/johanastborg/go-bazel-gazelle
 gazelle(name = "gazelle")
@@ -15,4 +18,30 @@ go_binary(
     name = "go-bazel-gazelle",
     embed = [":go-bazel-gazelle_lib"],
     visibility = ["//visibility:public"],
+)
+
+platform_transition_binary(
+    name = "go-bazel-gazelle_linux",
+    binary = ":go-bazel-gazelle",
+    target_platform = "@rules_go//go/toolchain:linux_arm64",
+)
+
+pkg_tar(
+    name = "app_layer",
+    srcs = [":go-bazel-gazelle_linux"],
+    package_dir = "/app",
+)
+
+oci_image(
+    name = "image",
+    architecture = "arm64", # Matches current environment
+    os = "linux",
+    entrypoint = ["/app/go-bazel-gazelle"],
+    tars = [":app_layer"],
+)
+
+oci_load(
+    name = "load",
+    image = ":image",
+    repo_tags = ["go-bazel-gazelle:latest"],
 )

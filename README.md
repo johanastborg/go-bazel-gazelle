@@ -37,14 +37,34 @@ Once running, the server listens on port `8080`. You can test it with `curl`:
 curl http://localhost:8080/api/hello
 ```
 
-### 3. Update Build Files (Gazelle)
+### 4. Build and Run with Docker
 
-If you add new Go files or dependencies, update the Bazel build files using Gazelle:
+To build the OCI container image and run it locally with Docker:
 ```bash
-bazel run //:gazelle
+./run_docker.sh
 ```
 
-## macOS Compatibility Notes
+This script will:
+1.  Build the OCI loadable tarball using Bazel.
+2.  Load the image into your local Docker daemon.
+3.  Start a container on port `8080`.
+
+Alternatively, you can build the image directly:
+
+To build the OCI image:
+```bash
+bazel build //:image
+```
+
+To load the image into Docker manually:
+```bash
+bazel run //:load
+```
+
+Once running, the containerized API is available at:
+```bash
+curl http://localhost:8080/api/hello
+```
 
 This project is configured to work around common macOS Xcode detection issues in `rules_go` by:
 1.  Using `apple_support` in `MODULE.bazel`.

@@ -16,7 +16,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	resp := Response{Message: "Hello, Bazel-built Go REST API!"}
+	resp := Response{Message: "Hello, Bazel-built Go REST API!!!"}
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(resp); err != nil {
 		log.Printf("Error encoding response: %v", err)
