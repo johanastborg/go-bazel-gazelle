@@ -3,7 +3,6 @@ bazel-*
 .bazelrc.user
 
 MODULE.bazel.lock
-.bazelrc
 
 # Go
 bin/
